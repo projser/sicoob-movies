@@ -17,13 +17,6 @@ class ListPopularMovies extends Component {
     >= contentSize.height - paddingToBottom;
   }
 
-  constructor() {
-    super();
-    this.state = {
-      shouldAddState: false,
-    };
-  }
-
   componentDidMount() {
     // eslint-disable-next-line no-shadow
     const { listMovies } = this.props;
@@ -67,17 +60,17 @@ class ListPopularMovies extends Component {
   render() {
     const {
       // eslint-disable-next-line no-shadow
-      movies, loading, addMovies, currentPage,
+      movies, loading, addMovies, currentPage, shouldAddState,
     } = this.props;
-
-    const { shouldAddState } = this.state;
 
     if (loading) {
       return null;
     }
 
-    if (!shouldAddState) {
-      this.setState({ shouldAddState: true });
+    const moviesList = [];
+
+    for (let i = 0; i < movies.length; i += 1) {
+      moviesList[i] = movies[i];
     }
 
     return (
@@ -101,7 +94,7 @@ class ListPopularMovies extends Component {
             Filmes Mais Populares
           </Text>
           <View style={styles.list}>
-            {ListPopularMovies.getList(movies)}
+            {ListPopularMovies.getList(moviesList)}
           </View>
         </Content>
       </Container>
@@ -113,6 +106,7 @@ const mapStateToProps = (store) => ({
   movies: store.moviesState.movies,
   loading: store.moviesState.loading,
   currentPage: store.moviesState.currentPage,
+  shouldAddState: store.moviesState.shouldAddState,
 });
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({ listMovies, addMovies }, dispatch);

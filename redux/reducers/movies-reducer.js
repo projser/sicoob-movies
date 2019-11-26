@@ -5,6 +5,7 @@ const initialState = {
   movies: [],
   error: null,
   currentPage: 1,
+  shouldAddState: true,
 };
 
 export default (state = initialState, action) => {
@@ -14,11 +15,13 @@ export default (state = initialState, action) => {
         ...state,
         movies: action.movies,
         loading: false,
+        shouldAddState: true,
       };
     case LIST_MOVIES_LOADING:
       return {
         ...state,
         loading: true,
+        shouldAddState: false,
       };
     case ADD_MOVIE_PAGE:
       return {
