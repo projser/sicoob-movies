@@ -1,7 +1,8 @@
-import { LIST_MOVIES_COMPLETED, LIST_MOVIES_LOADING, ADD_MOVIE_PAGE } from '../actions/movies-actions';
+import { LIST_MOVIES_COMPLETED, LIST_MOVIES_LOADING, ADD_MOVIE_PAGE, MOVIES_LOADING_NEW_PAGE } from '../actions/movies-actions';
 
 const initialState = {
   loading: true,
+  loadingNewPage: false,
   movies: [],
   error: null,
   currentPage: 1,
@@ -26,9 +27,14 @@ export default (state = initialState, action) => {
     case ADD_MOVIE_PAGE:
       return {
         ...state,
-        movies: [...state.movies, action.movies],
+        movies: [...state.movies, ...action.movies],
         currentPage: action.currentPage,
-        loading: false,
+        loadingNewPage: true,
+      };
+    case MOVIES_LOADING_NEW_PAGE:
+      return {
+        ...state,
+        loadingNewPage: true,
       };
     default:
       return state;

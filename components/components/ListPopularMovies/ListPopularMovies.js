@@ -5,7 +5,7 @@ import {
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { Container, Content } from 'native-base';
+import { Container, Content, Spinner } from 'native-base';
 
 import { listMovies, addMovies } from '../../../redux/actions/movies-actions';
 import styles from './styles';
@@ -45,7 +45,7 @@ class ListPopularMovies extends Component {
     for (let i = 0; i < movies.length; i += 1) {
       result.push(
         <Image
-          key={movies[i].id}
+          key={i}
           style={{
             backgroundColor: '#fff', width: 92, height: 140, marginTop: 30,
           }}
@@ -57,6 +57,18 @@ class ListPopularMovies extends Component {
     return result;
   }
 
+  getSpinner() {
+    const {
+      loadingNewPage
+    } = this.props;
+
+    if (loadingNewPage) {
+      return <Spinner color='white' />;
+    }
+
+    return null;
+  }
+
   render() {
     const {
       // eslint-disable-next-line no-shadow
@@ -65,12 +77,6 @@ class ListPopularMovies extends Component {
 
     if (loading) {
       return null;
-    }
-
-    const moviesList = [];
-
-    for (let i = 0; i < movies.length; i += 1) {
-      moviesList[i] = movies[i];
     }
 
     return (
@@ -94,8 +100,9 @@ class ListPopularMovies extends Component {
             Filmes Mais Populares
           </Text>
           <View style={styles.list}>
-            {ListPopularMovies.getList(moviesList)}
+            {ListPopularMovies.getList(movies)}
           </View>
+          {this.getSpinner()}
         </Content>
       </Container>
     );
@@ -107,6 +114,7 @@ const mapStateToProps = (store) => ({
   loading: store.moviesState.loading,
   currentPage: store.moviesState.currentPage,
   shouldAddState: store.moviesState.shouldAddState,
+  loadingNewPage: store.moviesState.loadingNewPage,
 });
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({ listMovies, addMovies }, dispatch);
