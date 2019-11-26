@@ -28,6 +28,7 @@ export default (state = initialState, action) => {
         ...state,
         movies: [...state.movies, action.movies],
         currentPage: action.currentPage,
+        loading: false,
       };
     default:
       return state;
