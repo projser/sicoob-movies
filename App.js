@@ -4,11 +4,15 @@ import { createStackNavigator } from 'react-navigation-stack';
 import { Provider } from 'react-redux';
 import ListPopularMovies from './components/components/ListPopularMovies/ListPopularMovies';
 import store from './redux/store';
+import ShowMovieDetails from './components/components/ShowMovieDetails/ShowMovieDetails';
 
 const AppNavigator = createStackNavigator({
   Home: {
     screen: ListPopularMovies,
   },
+  MovieDetails: {
+    screen: ShowMovieDetails,
+  }
 });
 
 const Navigation = createAppContainer(AppNavigator);
