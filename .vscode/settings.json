@@ -1,0 +1,7 @@
+{
+    "editor.tabSize": 2,
+    "prettier.singleQuote": true,
+    "prettier.trailingComma": "all",
+    "prettier.arrowParens": "always",
+    "html.format.preserveNewLines": false
+}
