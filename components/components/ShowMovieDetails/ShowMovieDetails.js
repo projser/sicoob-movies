@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  Text, View, Image, TouchableOpacity,
+  Text, View, Image,
 } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -11,7 +11,11 @@ import { listMovies, addMovies, getMovieAction } from '../../../redux/actions/mo
 import styles from './styles';
 
 class ShowMovieDetails extends Component {
-  getCover() {
+  static navigationOptions = ({ navigation }) => ({
+    title: navigation.getParam('title'),
+  });
+
+  getCover = () => {
     const { currentMovie } = this.props;
     if (!currentMovie) {
       return null;
@@ -25,13 +29,13 @@ class ShowMovieDetails extends Component {
     );
   }
 
-  getSpinner() {
+  getSpinner = () => {
     const {
-      loadingNewPage
+      loadingNewPage,
     } = this.props;
 
     if (loadingNewPage) {
-      return <Spinner color='white' />;
+      return <Spinner color="white" />;
     }
 
     return null;
@@ -45,7 +49,7 @@ class ShowMovieDetails extends Component {
     for (let i = 0; i < currentMovie.genre_ids.length; i += 1) {
       for (let j = 0; j < genres.genres.length; j += 1) {
         if (currentMovie.genre_ids[i] === genres.genres[j].id) {
-          movieGenres += genres.genres[j].name + ', ';
+          movieGenres += `${genres.genres[j].name}, `;
           break;
         }
       }
@@ -58,7 +62,7 @@ class ShowMovieDetails extends Component {
           <View style={styles.recomendation}>
             {this.getCover()}
           </View>
-          <View style={{ paddingLeft: 10, paddingRight: 10, backgroundColor: '#222'}}>
+          <View style={{ paddingLeft: 10, paddingRight: 10, backgroundColor: '#222' }}>
             <Text style={{
               marginTop: 30, color: '#fff', fontSize: 20, fontWeight: '700',
             }}
@@ -66,13 +70,19 @@ class ShowMovieDetails extends Component {
               {currentMovie.title}
             </Text>
             <Text style={{ color: '#fff', marginTop: 10 }}>
-              Release Date: {currentMovie.release_date}
+              Release Date:
+              {' '}
+              {currentMovie.release_date}
             </Text>
             <Text style={{ color: '#fff', marginTop: 10 }}>
-              Genres: {movieGenres}
+              Genres:
+              {' '}
+              {movieGenres}
             </Text>
             <Text style={{ color: '#fff', marginTop: 10, marginBottom: 20 }}>
-              Overview: {currentMovie.overview}
+              Overview:
+              {' '}
+              {currentMovie.overview}
             </Text>
           </View>
         </Content>
@@ -86,6 +96,13 @@ const mapStateToProps = (store) => ({
   genres: store.genresState.genres,
 });
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({ listMovies, addMovies, getMovieAction }, dispatch);
+const mapDispatchToProps = (dispatch) => bindActionCreators(
+  {
+    listMovies,
+    addMovies,
+    getMovieAction,
+  },
+  dispatch,
+);
 
 export default connect(mapStateToProps, mapDispatchToProps)(ShowMovieDetails);

@@ -6,14 +6,22 @@ import ListPopularMovies from './components/components/ListPopularMovies/ListPop
 import store from './redux/store';
 import ShowMovieDetails from './components/components/ShowMovieDetails/ShowMovieDetails';
 
-const AppNavigator = createStackNavigator({
-  Home: {
-    screen: ListPopularMovies,
+const AppNavigator = createStackNavigator(
+  {
+    Home: ListPopularMovies,
+    MovieDetails: ShowMovieDetails,
   },
-  MovieDetails: {
-    screen: ShowMovieDetails,
-  }
-});
+  {
+    initialRouteName: 'Home',
+    /* The header config from HomeScreen is now here */
+    defaultNavigationOptions: {
+      headerStyle: {
+        backgroundColor: '#222',
+      },
+      headerTintColor: '#fff',
+    },
+  },
+);
 
 const Navigation = createAppContainer(AppNavigator);
 

@@ -12,20 +12,32 @@ import { listGenres } from '../../../redux/actions/genre-actions';
 import styles from './styles';
 
 class ListPopularMovies extends Component {
-  static isCloseToBottom({ layoutMeasurement, contentOffset, contentSize }) {
+  static isCloseToBottom = ({ layoutMeasurement, contentOffset, contentSize }) => {
     const paddingToBottom = 2;
     return layoutMeasurement.height + contentOffset.y
     >= contentSize.height - paddingToBottom;
   }
 
-  componentDidMount() {
+  getSpinner = () => {
+    const {
+      loadingNewPage,
+    } = this.props;
+
+    if (loadingNewPage) {
+      return <Spinner color="white" />;
+    }
+
+    return null;
+  }
+
+  componentDidMount = () => {
     // eslint-disable-next-line no-shadow
     const { listMovies, listGenres } = this.props;
     listMovies();
     listGenres();
   }
 
-  getCover(movie) {
+  getCover = (movie) => {
     // eslint-disable-next-line no-shadow
     const { getMovieAction, navigation } = this.props;
     if (!movie) {
@@ -33,20 +45,26 @@ class ListPopularMovies extends Component {
     }
 
     return (
-      <TouchableOpacity onPress={() => { getMovieAction(movie); navigation.navigate('MovieDetails'); }} style={{flex: 1}}>
+      <TouchableOpacity
+        onPress={() => {
+          getMovieAction(movie);
+          navigation.navigate('MovieDetails', { title: movie.title });
+        }}
+        style={{ flex: 1 }}
+      >
         <Image
           style={{ flex: 1 }}
           source={{ uri: `http://image.tmdb.org/t/p/original${movie.poster_path}` }}
         />
         <View style={styles.recomendationTitle}>
-          <Text style={{color: 'white', fontSize: 20, fontWeight: '700' }}>The most popular:</Text>
-          <Text style={{color: 'white', fontSize: 34, fontWeight: '900' }}>{movie.title}</Text>
+          <Text style={{ color: 'white', fontSize: 20, fontWeight: '700' }}>The most popular:</Text>
+          <Text style={{ color: 'white', fontSize: 28, fontWeight: '900' }}>{movie.title}</Text>
         </View>
       </TouchableOpacity>
     );
   }
 
-  getList(movies) {
+  getList = (movies) => {
     // eslint-disable-next-line no-shadow
     const { getMovieAction, navigation } = this.props;
 
@@ -57,31 +75,23 @@ class ListPopularMovies extends Component {
     const result = [];
     for (let i = 0; i < movies.length; i += 1) {
       result.push(
-        <TouchableOpacity key={i} onPress={() => { getMovieAction(movies[i]); navigation.navigate('MovieDetails'); }}>
+        <TouchableOpacity key={i} onPress={() => { getMovieAction(movies[i]); navigation.navigate('MovieDetails', { title: movies[i].title }); }}>
           <Image
             style={{
               backgroundColor: '#fff', width: 92, height: 140, marginTop: 30,
             }}
             source={{ uri: `http://image.tmdb.org/t/p/w92${movies[i].poster_path}` }}
           />
-        </TouchableOpacity>
+        </TouchableOpacity>,
       );
     }
 
     return result;
   }
 
-  getSpinner() {
-    const {
-      loadingNewPage
-    } = this.props;
-
-    if (loadingNewPage) {
-      return <Spinner color='white' />;
-    }
-
-    return null;
-  }
+  static navigationOptions = {
+    title: 'Sicoob Movies',
+  };
 
   render() {
     const {
@@ -107,7 +117,7 @@ class ListPopularMovies extends Component {
           <View style={styles.recomendation}>
             {this.getCover(movies[0])}
           </View>
-          <View style={{ paddingLeft: 10, paddingRight: 10}}>
+          <View style={{ paddingLeft: 10, paddingRight: 10 }}>
             <Text style={{
               marginTop: 30, color: '#fff', fontSize: 20, fontWeight: '700',
             }}
@@ -133,6 +143,8 @@ const mapStateToProps = (store) => ({
   loadingNewPage: store.moviesState.loadingNewPage,
 });
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({ listMovies, addMovies, getMovieAction, listGenres }, dispatch);
+const mapDispatchToProps = (dispatch) => bindActionCreators({
+  listMovies, addMovies, getMovieAction, listGenres,
+}, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(ListPopularMovies);

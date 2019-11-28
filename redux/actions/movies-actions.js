@@ -1,3 +1,5 @@
+import API_URL from '../../settings';
+
 export const LIST_MOVIES_LOADING = 'LIST_MOVIES_LOADING';
 export const GET_MOVIES_LOADING = 'GET_MOVIES_LOADING';
 export const GET_MOVIE = 'GET_MOVIE';
@@ -37,7 +39,7 @@ export const getMovieAction = (movie) => ({
 export const listMovies = () => async (dispatch) => {
   dispatch(listMoviesLoading());
   const response = await fetch(
-    'http://api.themoviedb.org/3/movie/popular?api_key=85db0997e1f5569002d475f0f4ed9325',
+    `${API_URL}movies?page=1`,
   );
   const result = await response.json();
   dispatch(listCompleted(result.results));
@@ -47,7 +49,7 @@ export const addMovies = (oldPage) => async (dispatch) => {
   dispatch(listMoviesNewPage());
   const page = oldPage + 1;
   const response = await fetch(
-    `http://api.themoviedb.org/3/movie/popular?page=${page}&api_key=85db0997e1f5569002d475f0f4ed9325`,
+    `${API_URL}movies?page=${page}`,
   );
   const result = await response.json();
   dispatch(addNewMovies(page, result.results));
