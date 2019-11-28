@@ -7,7 +7,7 @@
 
 # Start expo
 
-  Firtly, change in settings.js file the path for the previously started api
+  Firstly, change in settings.js file, the path for the previously started api
   
   If running in android simulator, one should use:
 
@@ -19,7 +19,7 @@
 
   If running on device, use your local IP.
   After, run
-  
+
     npm i
     npm start
   
