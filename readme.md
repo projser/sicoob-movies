@@ -5,6 +5,7 @@
 
 # Start expo
   Firtly, change in settings.js file the path for the previously started api
+  
   If running in android simulator, one should use:
 
     0.0.0.0:3000/
