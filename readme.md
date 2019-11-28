@@ -24,3 +24,9 @@
   After, run
 
     npm start
+  
+# Testing
+
+  To run tests, use 
+
+    npm run test
