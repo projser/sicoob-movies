@@ -11,7 +11,7 @@ import { listMovies, addMovies, getMovieAction } from '../../../redux/actions/mo
 import { listGenres } from '../../../redux/actions/genre-actions';
 import styles from './styles';
 
-class ListPopularMovies extends Component {
+export class ListPopularMovies extends Component {
   static isCloseToBottom = ({ layoutMeasurement, contentOffset, contentSize }) => {
     const paddingToBottom = 2;
     return layoutMeasurement.height + contentOffset.y
